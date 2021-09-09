@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 2572298998957653822}
   - component: {fileID: 113173541938583447}
   m_Layer: 0
-  m_Name: DebugView
+  m_Name: OptionView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2564,12 +2564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1d69a1a4a3241b786b82f883da35d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_optionPanel:
-    m_prefabTitle: {fileID: 8672022695515792969}
-    m_prefabButton: {fileID: 2312240663212007821}
-    m_prefabInput: {fileID: 7977728328095411622}
-    m_prefabCatalog: {fileID: 6658271219059591177}
-    m_rootContainer: {fileID: 1921174411777846444}
   m_root: {fileID: 6134024998407281488}
   m_btnClose: {fileID: 644611679961904081}
   m_tabList:
@@ -2579,14 +2573,22 @@ MonoBehaviour:
     view: {fileID: 7149303486050890712}
   - tab: {fileID: 727198597189447125}
     view: {fileID: 8051250133531472921}
-  m_txtLog: {fileID: 5158629634780892679}
-  m_btnClearLog: {fileID: 3188522937479366827}
-  m_btnCopyLog: {fileID: 1963774805136090959}
-  m_imgFPS: {fileID: 6923145591919572605}
-  m_txtFPS: {fileID: 6833783556886035621}
-  m_fpsCheckTime: 0.1
-  m_txtDeviceInfo: {fileID: 8236459259525339413}
-  m_txtScreenInfo: {fileID: 394636085310615016}
+  m_optionPanel:
+    m_prefabTitle: {fileID: 8672022695515792969}
+    m_prefabButton: {fileID: 2312240663212007821}
+    m_prefabInput: {fileID: 7977728328095411622}
+    m_prefabCatalog: {fileID: 6658271219059591177}
+    m_rootContainer: {fileID: 1921174411777846444}
+  m_logPanel:
+    m_txtLog: {fileID: 5158629634780892679}
+    m_btnClearLog: {fileID: 3188522937479366827}
+    m_btnCopyLog: {fileID: 1963774805136090959}
+  m_detailPanel:
+    m_imgFPS: {fileID: 6923145591919572605}
+    m_txtFPS: {fileID: 6833783556886035621}
+    m_fpsCheckTime: 0.5
+    m_txtDeviceInfo: {fileID: 8236459259525339413}
+    m_txtScreenInfo: {fileID: 394636085310615016}
 --- !u!1 &7509310568870319445
 GameObject:
   m_ObjectHideFlags: 0
