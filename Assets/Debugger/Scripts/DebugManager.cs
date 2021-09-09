@@ -112,6 +112,9 @@ public class DebugManager : MonoBehaviour
     GameObject m_root;
 
     [SerializeField]
+    RectTransform m_safeArea;
+
+    [SerializeField]
     Button m_btnClose;
 
     [SerializeField]
@@ -140,6 +143,26 @@ public class DebugManager : MonoBehaviour
 
         m_instance.RefreshUI();
         m_instance.m_root.SetActive(true);
+
+        var fullSize = m_instance.m_root.GetComponent<RectTransform>().sizeDelta;
+
+        var safeArea = Screen.safeArea;
+        safeArea.x += 80;
+        safeArea.width -= 80;
+
+        var posX = Mathf.Round(fullSize.x * safeArea.position.x / Screen.width);
+        var posW = fullSize.x * safeArea.size.x / Screen.width;
+        var posY = Mathf.Round(fullSize.y * safeArea.position.y / Screen.height);
+        var posH = fullSize.y * safeArea.size.y / Screen.height;
+
+        m_instance.m_safeArea.anchorMin = Vector2.zero;
+        m_instance.m_safeArea.anchorMax = Vector2.one;
+
+        var deltaX = Mathf.Round(fullSize.x - posW);
+        var deltaY = Mathf.Round(fullSize.y - posH);
+
+        m_instance.m_safeArea.anchoredPosition = new Vector2(posX - deltaX / 2, posY - deltaY / 2);
+        m_instance.m_safeArea.sizeDelta = new Vector2(-deltaX, -deltaY);
     }
 
     public static void HideDebugUI()
