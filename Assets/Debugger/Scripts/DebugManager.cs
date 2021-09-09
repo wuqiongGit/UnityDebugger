@@ -78,7 +78,7 @@ public class DebugManager : MonoBehaviour
         {
             foreach (var panel in m_panels)
             {
-                panel.ProcessAutoStart();
+                StartCoroutine(panel.ProcessAutoStart());
             }
         }
     }
