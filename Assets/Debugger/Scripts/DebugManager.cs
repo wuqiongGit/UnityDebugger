@@ -147,8 +147,8 @@ public class DebugManager : MonoBehaviour
         var fullSize = m_instance.m_root.GetComponent<RectTransform>().sizeDelta;
 
         var safeArea = Screen.safeArea;
-        safeArea.x += 80;
-        safeArea.width -= 80;
+        //safeArea.x += 80;
+        //safeArea.width -= 80;
 
         var posX = Mathf.Round(fullSize.x * safeArea.position.x / Screen.width);
         var posW = fullSize.x * safeArea.size.x / Screen.width;
