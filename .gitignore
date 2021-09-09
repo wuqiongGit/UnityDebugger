@@ -1,0 +1,13 @@
+[Ll]ibrary
+[Ll]ogs
+[Tt]emp
+[Oo]bj
+
+
+.DS_Store
+.vs
+.vsconfig
+
+
+*.csproj
+*.sln
