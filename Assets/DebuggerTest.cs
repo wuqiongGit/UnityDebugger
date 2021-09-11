@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using ZPlugins;
 
 public class DebuggerTest : MonoBehaviour
 {
