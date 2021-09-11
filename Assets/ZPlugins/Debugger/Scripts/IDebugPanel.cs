@@ -1,12 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public interface IDebugPanel
+namespace ZPlugins
 {
-    IEnumerator ProcessInit();
-    IEnumerator ProcessAutoStart();
+    public interface IDebugPanel
+    {
+        IEnumerator ProcessInit();
+        IEnumerator ProcessAutoStart();
 
-    void RefreshUI();
-    void CreateUI();
+        void RefreshUI();
+        void CreateUI();
+    }
 }
