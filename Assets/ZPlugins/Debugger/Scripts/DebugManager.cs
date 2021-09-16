@@ -93,10 +93,10 @@ namespace ZPlugins
                 ShowDebugUI();
             }
 #elif UNITY_IOS || UNITY_ANDROID
-        if (Input.touchSupported && Input.touchCount > 3)
-        {
-            ShowDebugUI();
-        }
+            if (Input.touchSupported && Input.touchCount > 3)
+            {
+                ShowDebugUI();
+            }
 #endif
         }
 
