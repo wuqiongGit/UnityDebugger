@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,9 @@ namespace ZPlugins
 
         [SerializeField]
         Text m_txtLog;
+
+        [SerializeField]
+        Button m_btnClearFilter;
 
         [SerializeField]
         InputField m_txtFilter;
@@ -60,7 +64,10 @@ namespace ZPlugins
         {
             m_btnClearLog.onClick.RemoveAllListeners();
             m_btnCopyLog.onClick.RemoveAllListeners();
+
+            m_btnClearFilter.onClick.RemoveAllListeners();
             m_txtFilter.onValueChanged.RemoveAllListeners();
+
             m_checkLogFilter.onValueChanged.RemoveAllListeners();
             m_checkWarningFilter.onValueChanged.RemoveAllListeners();
             m_checkExceptionFilter.onValueChanged.RemoveAllListeners();
@@ -69,7 +76,10 @@ namespace ZPlugins
 
             m_btnClearLog.onClick.AddListener(ClearLog);
             m_btnCopyLog.onClick.AddListener(() => GUIUtility.systemCopyBuffer = GetLogText());
+
+            m_btnClearFilter.onClick.AddListener(() => m_txtFilter.text = "");
             m_txtFilter.onValueChanged.AddListener(v => m_filterDirty = true);
+
             m_checkLogFilter.onValueChanged.AddListener(v => m_filterDirty = true);
             m_checkWarningFilter.onValueChanged.AddListener(v => m_filterDirty = true);
             m_checkExceptionFilter.onValueChanged.AddListener(v => m_filterDirty = true);
@@ -237,7 +247,10 @@ namespace ZPlugins
 
             if (!string.IsNullOrEmpty(m_txtFilter.text))
             {
-                if (data.logRaw.IndexOf(m_txtFilter.text) < 0) return false;
+                if (!Regex.IsMatch(data.logRaw, m_txtFilter.text, RegexOptions.IgnoreCase))
+                {
+                    return false;
+                }
             }
 
             return true;
