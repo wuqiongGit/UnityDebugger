@@ -110,29 +110,18 @@ namespace ZPlugins
             public GameObject view;
         }
 
-        [SerializeField]
-        GameObject m_root;
-
-        [SerializeField]
-        RectTransform m_safeArea;
-
-        [SerializeField]
-        Button m_btnClose;
-
-        [SerializeField]
-        List<TabGroup> m_tabList;
+        [SerializeField] GameObject m_root;
+        [SerializeField] RectTransform m_safeArea;
+        [SerializeField] Button m_btnClose;
+        [SerializeField] List<TabGroup> m_tabList;
 
         [Header("Panels")]
-        [SerializeField]
-        DebugOptionPanel m_optionPanel;
-
-        [SerializeField]
-        DebugLogPanel m_logPanel;
-
-        [SerializeField]
-        DebugDetailPanel m_detailPanel;
+        [SerializeField] DebugOptionPanel m_optionPanel;
+        [SerializeField] DebugLogPanel m_logPanel;
+        [SerializeField] DebugDetailPanel m_detailPanel;
 
         List<IDebugPanel> m_panels;
+        static EventSystem selfEventSystem;
 
         public static bool IsActive()
         {
@@ -165,12 +154,25 @@ namespace ZPlugins
 
             m_instance.m_safeArea.anchoredPosition = new Vector2(posX - deltaX / 2, posY - deltaY / 2);
             m_instance.m_safeArea.sizeDelta = new Vector2(-deltaX, -deltaY);
+
+            if (EventSystem.current == null)
+            {
+                var go = new GameObject("EventSystem");
+                selfEventSystem = go.AddComponent<EventSystem>();
+                go.AddComponent<StandaloneInputModule>();
+            }
         }
 
         public static void HideDebugUI()
         {
             if (!m_instance) return;
             m_instance.m_root.SetActive(false);
+
+            if (selfEventSystem)
+            {
+                Destroy(selfEventSystem.gameObject);
+                selfEventSystem = null;
+            }
         }
 
         void RefreshUI()

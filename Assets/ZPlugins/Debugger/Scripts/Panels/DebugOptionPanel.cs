@@ -12,20 +12,11 @@ namespace ZPlugins
     [Serializable]
     public class DebugOptionPanel : IDebugPanel
     {
-        [SerializeField]
-        Text m_prefabTitle;
-
-        [SerializeField]
-        Button m_prefabButton;
-
-        [SerializeField]
-        GameObject m_prefabInput;
-
-        [SerializeField]
-        RectTransform m_prefabCatalog;
-
-        [SerializeField]
-        RectTransform m_rootContainer;
+        [SerializeField] Text m_prefabTitle;
+        [SerializeField] Button m_prefabButton;
+        [SerializeField] GameObject m_prefabInput;
+        [SerializeField] RectTransform m_prefabCatalog;
+        [SerializeField] RectTransform m_rootContainer;
 
         class MethodInfoData
         {

@@ -9,20 +9,11 @@ namespace ZPlugins
     [Serializable]
     public class DebugDetailPanel : IDebugPanel
     {
-        [SerializeField]
-        RawImage m_imgFPS;
-
-        [SerializeField]
-        Text m_txtFPS;
-
-        [SerializeField, Range(0.01f, 2)]
-        float m_fpsCheckTime = 0.5f;
-
-        [SerializeField]
-        Text m_txtDeviceInfo;
-
-        [SerializeField]
-        Text m_txtScreenInfo;
+        [SerializeField] RawImage m_imgFPS;
+        [SerializeField] Text m_txtFPS;
+        [SerializeField, Range(0.01f, 2)] float m_fpsCheckTime = 0.5f;
+        [SerializeField] Text m_txtDeviceInfo;
+        [SerializeField] Text m_txtScreenInfo;
 
         Texture2D m_texture;
 
@@ -116,6 +107,7 @@ namespace ZPlugins
             sb.Append($"\tName\t : {SystemInfo.deviceName}\n");
             sb.Append($"\tType\t : {SystemInfo.deviceType}\n");
             sb.Append($"\tModel\t : {SystemInfo.deviceModel}\n");
+            sb.Append($"\tCPU\t : {SystemInfo.processorType} x{SystemInfo.processorCount} @ {(float)SystemInfo.processorFrequency / 1000:F1} GHz\n");
             sb.Append($"\tMemory\t : {(float)SystemInfo.systemMemorySize / 1024:F2}GB\n");
 
             m_txtDeviceInfo.text = sb.ToString();

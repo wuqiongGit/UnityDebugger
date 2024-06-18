@@ -22,35 +22,16 @@ namespace ZPlugins
             public int length;
         }
 
-        [SerializeField]
-        Text m_txtLog;
-
-        [SerializeField]
-        Button m_btnClearFilter;
-
-        [SerializeField]
-        InputField m_txtFilter;
-
-        [SerializeField]
-        Toggle m_checkLogFilter;
-
-        [SerializeField]
-        Toggle m_checkWarningFilter;
-
-        [SerializeField]
-        Toggle m_checkExceptionFilter;
-
-        [SerializeField]
-        Toggle m_checkAssertFilter;
-
-        [SerializeField]
-        Toggle m_checkErrorFilter;
-
-        [SerializeField]
-        Button m_btnClearLog;
-
-        [SerializeField]
-        Button m_btnCopyLog;
+        [SerializeField] Text m_txtLog;
+        [SerializeField] Button m_btnClearFilter;
+        [SerializeField] InputField m_txtFilter;
+        [SerializeField] Toggle m_checkLogFilter;
+        [SerializeField] Toggle m_checkWarningFilter;
+        [SerializeField] Toggle m_checkExceptionFilter;
+        [SerializeField] Toggle m_checkAssertFilter;
+        [SerializeField] Toggle m_checkErrorFilter;
+        [SerializeField] Button m_btnClearLog;
+        [SerializeField] Button m_btnCopyLog;
 
         List<LogData> m_logData;
 
