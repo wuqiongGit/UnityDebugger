@@ -16,7 +16,7 @@ namespace ZPlugins
         [SerializeField] Text m_txtScreenInfo;
 
         Texture2D m_texture;
-
+        
         public IEnumerator ProcessInit()
         {
             yield return null;
@@ -97,11 +97,15 @@ namespace ZPlugins
             sb.Append($"\tUnity Version\t : {Application.unityVersion}\n");
             sb.Append($"\tIs 64Bit\t : {Environment.Is64BitProcess}\n");
 
+            sb.AppendLine();
+
             sb.Append($"System\n");
             sb.Append($"\tSystem\t : {SystemInfo.operatingSystem}\n");
             sb.Append($"\tVersion\t : {Environment.OSVersion}\n");
             sb.Append($"\tLanguage\t : {Application.systemLanguage}\n");
             sb.Append($"\tIs 64Bit\t : {Environment.Is64BitOperatingSystem}\n");
+
+            sb.AppendLine();
 
             sb.Append($"Device\n");
             sb.Append($"\tName\t : {SystemInfo.deviceName}\n");
@@ -116,7 +120,11 @@ namespace ZPlugins
             sb.Append($"\tSize\t : {Screen.width}x{Screen.height}\n");
             sb.Append($"\tSafe Area\t : {Screen.safeArea.x},{Screen.safeArea.y},{Screen.safeArea.width},{Screen.safeArea.height}\n");
             sb.Append($"\tResolution\t : {Screen.currentResolution}\n");
+            sb.Append($"\tDPI\t : {Screen.dpi}\n");
             sb.Append($"\tTargetFrameRate\t : {Application.targetFrameRate}\n");
+
+            sb.AppendLine();
+
             sb.Append($"Graphics\n");
             sb.Append($"\tName\t : {SystemInfo.graphicsDeviceName}\n");
             sb.Append($"\tType\t : {SystemInfo.graphicsDeviceType}\n");
