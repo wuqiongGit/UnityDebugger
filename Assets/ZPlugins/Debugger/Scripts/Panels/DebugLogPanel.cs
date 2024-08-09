@@ -22,35 +22,16 @@ namespace ZPlugins
             public int length;
         }
 
-        [SerializeField]
-        Text m_txtLog;
-
-        [SerializeField]
-        Button m_btnClearFilter;
-
-        [SerializeField]
-        InputField m_txtFilter;
-
-        [SerializeField]
-        Toggle m_checkLogFilter;
-
-        [SerializeField]
-        Toggle m_checkWarningFilter;
-
-        [SerializeField]
-        Toggle m_checkExceptionFilter;
-
-        [SerializeField]
-        Toggle m_checkAssertFilter;
-
-        [SerializeField]
-        Toggle m_checkErrorFilter;
-
-        [SerializeField]
-        Button m_btnClearLog;
-
-        [SerializeField]
-        Button m_btnCopyLog;
+        [SerializeField] Text m_txtLog;
+        [SerializeField] Button m_btnClearFilter;
+        [SerializeField] InputField m_txtFilter;
+        [SerializeField] Toggle m_checkLogFilter;
+        [SerializeField] Toggle m_checkWarningFilter;
+        [SerializeField] Toggle m_checkExceptionFilter;
+        [SerializeField] Toggle m_checkAssertFilter;
+        [SerializeField] Toggle m_checkErrorFilter;
+        [SerializeField] Button m_btnClearLog;
+        [SerializeField] Button m_btnCopyLog;
 
         List<LogData> m_logData;
 
@@ -148,8 +129,16 @@ namespace ZPlugins
                         color = "#000000";
                         break;
                 }
-                s2 = $"{s}\n\t{stackTrace}";
-                s = $"<color={color}><b>{s}</b></color>\n\t<color=#999999><i>{stackTrace}</i></color>";
+                if (!string.IsNullOrEmpty(stackTrace))
+                {
+                    s2 = $"{s}\n\t{stackTrace}";
+                    s = $"<color={color}><b>{s}</b></color>\n\t<color=#999999><i>{stackTrace}</i></color>";
+                }
+                else
+                {
+                    s2 = s;
+                    s = $"<color={color}><b>{s}</b></color>";
+                }
             }
             else
             {

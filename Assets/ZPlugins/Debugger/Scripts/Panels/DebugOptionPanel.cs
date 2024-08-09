@@ -12,24 +12,16 @@ namespace ZPlugins
     [Serializable]
     public class DebugOptionPanel : IDebugPanel
     {
-        [SerializeField]
-        Text m_prefabTitle;
-
-        [SerializeField]
-        Button m_prefabButton;
-
-        [SerializeField]
-        GameObject m_prefabInput;
-
-        [SerializeField]
-        RectTransform m_prefabCatalog;
-
-        [SerializeField]
-        RectTransform m_rootContainer;
+        [SerializeField] Text m_prefabTitle;
+        [SerializeField] Button m_prefabButton;
+        [SerializeField] GameObject m_prefabInput;
+        [SerializeField] RectTransform m_prefabCatalog;
+        [SerializeField] RectTransform m_rootContainer;
 
         class MethodInfoData
         {
             public int catalogOrder;
+            public int index;
             public string catalog;
             public string name;
             public int order;
@@ -37,6 +29,8 @@ namespace ZPlugins
             public DebugMethodAttribute.ParamType paramType;
             public string paramValue;
             public PropertyInfo tag;
+
+            public Button btnRef;
         }
 
         class ClassInfoData
@@ -62,6 +56,7 @@ namespace ZPlugins
 
             yield return null;
 
+            var methodIndex = 0;
             foreach (var t in types)
             {
                 var methods = t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
@@ -89,13 +84,14 @@ namespace ZPlugins
                         var data = new MethodInfoData();
                         var a = m.GetCustomAttribute<DebugMethodAttribute>();
                         data.catalogOrder = classOrder;
+                        data.index = methodIndex++;
                         data.catalog = string.IsNullOrEmpty(a.catalog) ? t.ToString() : a.catalog;
                         data.name = string.IsNullOrEmpty(a.altName) ? AutoName(m.Name) : a.altName;
                         data.order = a.order;
                         data.info = m;
                         data.paramType = a.paramType;
                         data.paramValue = a.paramValue;
-                        data.tag = t.GetProperty(m.Name + "Tag");
+                        data.tag = t.GetProperty(m.Name + "Tag", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
                         m_debugMethodList.Add(data);
                     }
                 }
@@ -112,7 +108,7 @@ namespace ZPlugins
 
                 if (a.order != b.order) return a.order - b.order;
 
-                return string.CompareOrdinal(a.name, b.name);
+                return a.index - b.index;
             });
 
             yield return null;
@@ -125,6 +121,17 @@ namespace ZPlugins
                 var show = (bool)data.checker.Invoke(null, null);
                 data.title.SetActive(show);
                 data.container.SetActive(show);
+            }
+
+            foreach (var data in m_debugMethodList)
+            {
+                if (data.btnRef != null)
+                {
+                    var btnTxt = data.btnRef.GetComponentInChildren<Text>(true);
+                    var btnName = data.name;
+                    var tag = data.tag;
+                    RefreshButtonText(btnTxt, btnName, tag);
+                }
             }
         }
 
@@ -194,6 +201,8 @@ namespace ZPlugins
                         RefreshButtonText(btnTxt, btnName, data.tag);
                     });
                 }
+
+                data.btnRef = btn;
             }
         }
 

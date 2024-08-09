@@ -66,21 +66,23 @@ namespace ZPlugins
             yield return m_optionPanel.ProcessInit();
             yield return m_detailPanel.ProcessInit();
 
-            m_panels = new List<IDebugPanel>();
-            m_panels.Add(m_logPanel);
-            m_panels.Add(m_optionPanel);
-            m_panels.Add(m_detailPanel);
+            if (m_tabList.Count > 0) m_tabList[0].panel = m_logPanel;
+            if (m_tabList.Count > 1) m_tabList[1].panel = m_optionPanel;
+            if (m_tabList.Count > 2) m_tabList[2].panel = m_detailPanel;
 
             CreateUI();
         }
 
         void OnEnable()
         {
-            if (m_panels != null)
+            if (m_tabList != null && m_tabList.Count > 0)
             {
-                foreach (var panel in m_panels)
+                foreach (var tabGroup in m_tabList)
                 {
-                    StartCoroutine(panel.ProcessAutoStart());
+                    if (tabGroup.panel != null)
+                    {
+                        StartCoroutine(tabGroup.panel.ProcessAutoStart());
+                    }
                 }
             }
         }
@@ -108,31 +110,20 @@ namespace ZPlugins
         {
             public Button tab;
             public GameObject view;
+            public IDebugPanel panel;
         }
 
-        [SerializeField]
-        GameObject m_root;
-
-        [SerializeField]
-        RectTransform m_safeArea;
-
-        [SerializeField]
-        Button m_btnClose;
-
-        [SerializeField]
-        List<TabGroup> m_tabList;
+        [SerializeField] GameObject m_root;
+        [SerializeField] RectTransform m_safeArea;
+        [SerializeField] Button m_btnClose;
+        [SerializeField] List<TabGroup> m_tabList;
 
         [Header("Panels")]
-        [SerializeField]
-        DebugOptionPanel m_optionPanel;
+        [SerializeField] DebugOptionPanel m_optionPanel;
+        [SerializeField] DebugLogPanel m_logPanel;
+        [SerializeField] DebugDetailPanel m_detailPanel;
 
-        [SerializeField]
-        DebugLogPanel m_logPanel;
-
-        [SerializeField]
-        DebugDetailPanel m_detailPanel;
-
-        List<IDebugPanel> m_panels;
+        static EventSystem selfEventSystem;
 
         public static bool IsActive()
         {
@@ -165,43 +156,57 @@ namespace ZPlugins
 
             m_instance.m_safeArea.anchoredPosition = new Vector2(posX - deltaX / 2, posY - deltaY / 2);
             m_instance.m_safeArea.sizeDelta = new Vector2(-deltaX, -deltaY);
+
+            if (EventSystem.current == null)
+            {
+                var go = new GameObject("EventSystem");
+                selfEventSystem = go.AddComponent<EventSystem>();
+                go.AddComponent<StandaloneInputModule>();
+            }
         }
 
         public static void HideDebugUI()
         {
             if (!m_instance) return;
             m_instance.m_root.SetActive(false);
+
+            if (selfEventSystem)
+            {
+                Destroy(selfEventSystem.gameObject);
+                selfEventSystem = null;
+            }
         }
 
         void RefreshUI()
         {
-            foreach (var panel in m_panels)
+            foreach (var tabGroup in m_tabList)
             {
-                panel.RefreshUI();
+                if (tabGroup.panel != null)
+                {
+                    tabGroup.panel.RefreshUI();
+                }
             }
         }
 
         void CreateUI()
         {
-            {
-                m_btnClose.onClick.RemoveAllListeners();
-                m_btnClose.onClick.AddListener(HideDebugUI);
+            StopAllCoroutines();
 
-                foreach (var tabData in m_tabList)
+            m_btnClose.onClick.RemoveAllListeners();
+            m_btnClose.onClick.AddListener(HideDebugUI);
+
+            foreach (var tabData in m_tabList)
+            {
+                tabData.tab.onClick.RemoveAllListeners();
+                tabData.tab.onClick.AddListener(() => ShowTabContent(tabData.view));
+
+                if (tabData.panel != null)
                 {
-                    tabData.tab.onClick.RemoveAllListeners();
-                    tabData.tab.onClick.AddListener(() => ShowTabContent(tabData.view));
+                    tabData.panel.CreateUI();
+                    StartCoroutine(tabData.panel.ProcessAutoStart());
                 }
-                m_tabList[0].tab.onClick.Invoke();
             }
-
-            foreach (var panel in m_panels)
-            {
-                panel.CreateUI();
-                StartCoroutine(panel.ProcessAutoStart());
-            }
-
-            RefreshUI();
+            m_tabList[0].tab.onClick.Invoke();
         }
 
         void ShowTabContent(GameObject view)
@@ -210,6 +215,10 @@ namespace ZPlugins
             {
                 tabData.tab.interactable = view != tabData.view;
                 tabData.view.SetActive(view == tabData.view);
+                if (tabData.panel != null)
+                {
+                    tabData.panel.RefreshUI();
+                }
             }
         }
 

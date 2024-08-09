@@ -9,23 +9,14 @@ namespace ZPlugins
     [Serializable]
     public class DebugDetailPanel : IDebugPanel
     {
-        [SerializeField]
-        RawImage m_imgFPS;
-
-        [SerializeField]
-        Text m_txtFPS;
-
-        [SerializeField, Range(0.01f, 2)]
-        float m_fpsCheckTime = 0.5f;
-
-        [SerializeField]
-        Text m_txtDeviceInfo;
-
-        [SerializeField]
-        Text m_txtScreenInfo;
+        [SerializeField] RawImage m_imgFPS;
+        [SerializeField] Text m_txtFPS;
+        [SerializeField, Range(0.01f, 2)] float m_fpsCheckTime = 0.5f;
+        [SerializeField] Text m_txtDeviceInfo;
+        [SerializeField] Text m_txtScreenInfo;
 
         Texture2D m_texture;
-
+        
         public IEnumerator ProcessInit()
         {
             yield return null;
@@ -106,16 +97,21 @@ namespace ZPlugins
             sb.Append($"\tUnity Version\t : {Application.unityVersion}\n");
             sb.Append($"\tIs 64Bit\t : {Environment.Is64BitProcess}\n");
 
+            sb.AppendLine();
+
             sb.Append($"System\n");
             sb.Append($"\tSystem\t : {SystemInfo.operatingSystem}\n");
             sb.Append($"\tVersion\t : {Environment.OSVersion}\n");
             sb.Append($"\tLanguage\t : {Application.systemLanguage}\n");
             sb.Append($"\tIs 64Bit\t : {Environment.Is64BitOperatingSystem}\n");
 
+            sb.AppendLine();
+
             sb.Append($"Device\n");
             sb.Append($"\tName\t : {SystemInfo.deviceName}\n");
             sb.Append($"\tType\t : {SystemInfo.deviceType}\n");
             sb.Append($"\tModel\t : {SystemInfo.deviceModel}\n");
+            sb.Append($"\tCPU\t : {SystemInfo.processorType} x{SystemInfo.processorCount} @ {(float)SystemInfo.processorFrequency / 1000:F1} GHz\n");
             sb.Append($"\tMemory\t : {(float)SystemInfo.systemMemorySize / 1024:F2}GB\n");
 
             m_txtDeviceInfo.text = sb.ToString();
@@ -124,7 +120,11 @@ namespace ZPlugins
             sb.Append($"\tSize\t : {Screen.width}x{Screen.height}\n");
             sb.Append($"\tSafe Area\t : {Screen.safeArea.x},{Screen.safeArea.y},{Screen.safeArea.width},{Screen.safeArea.height}\n");
             sb.Append($"\tResolution\t : {Screen.currentResolution}\n");
+            sb.Append($"\tDPI\t : {Screen.dpi}\n");
             sb.Append($"\tTargetFrameRate\t : {Application.targetFrameRate}\n");
+
+            sb.AppendLine();
+
             sb.Append($"Graphics\n");
             sb.Append($"\tName\t : {SystemInfo.graphicsDeviceName}\n");
             sb.Append($"\tType\t : {SystemInfo.graphicsDeviceType}\n");
